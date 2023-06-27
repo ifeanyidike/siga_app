@@ -1,0 +1,43 @@
+'use client'
+import '@styles/globals.css'
+import { Josefin_Sans } from 'next/font/google'
+import Nav from '@components/Nav'
+import { GlobalContextProvider } from './context/store'
+
+const josefin_sans = Josefin_Sans({
+  weight: ['100', '200', '300', '400', '500', '600', '700'],
+  subsets: ['latin'],
+})
+
+export const metadata = {
+  title: 'SIGA Music Event | Live Performances, Equipment Tutoring & More',
+  description:
+    'Discover SIGA, the ultimate music event web app offering live performances, expert equipment tutoring, and a vibrant community. ',
+  Keywords:
+    'SIGA, music event app, live performances, equipment tutoring, music education, community, musician tools',
+  Category: 'Music Events | Music Education',
+}
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang='en'>
+      <body className={josefin_sans.className}>
+        <link rel='icon' href='/favicon.ico' sizes='any' />
+        <div className='main'>
+          <div className='gradient' />
+        </div>
+
+        <main className='app'>
+          <header>
+            {' '}
+            <Nav />
+          </header>
+          <GlobalContextProvider>{children}</GlobalContextProvider>
+        </main>
+        <footer className='footer'>
+          Copyright &copy; 2023 SIGA. All rights reserved
+        </footer>
+      </body>
+    </html>
+  )
+}
