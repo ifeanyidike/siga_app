@@ -47,9 +47,9 @@ a {
 
 .app {
   margin: auto;
-  margin-top: 4rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  margin-top: 0;
+  padding-left: 0;
+  padding-right: 0;
 }
 /* Navigation bar css */
 
@@ -313,6 +313,38 @@ form span {
 .myformlink {
   font-weight: 700;
 }
+/* List Service style */
+
+.serviceitem_container {
+  /* display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.5rem; */
+  border: 4px solid yellow;
+}
+
+.listservice-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.serviceitem_wrapper {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 3rem;
+}
+
+@media (min-width: 768px) {
+  .serviceitem_wrapper {
+    flex-direction: row;
+  }
+}
+.serviceitem_wrapper > * {
+  margin-left: -16px;
+  margin-right: -16px;
+}
+
 /* ServiceItems card css */
 .card {
   height: 24rem;
@@ -332,7 +364,7 @@ form span {
   transform: scale(1.05);
 }
 .product_image {
-  width: 90%;
+  width: 100%;
   height: 70%;
   border-radius: 0.25rem;
 }
@@ -352,6 +384,13 @@ form span {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.service_description {
+  width: 11rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .description-text {
   /* overflow: hidden;
   text-overflow: ellipsis;
@@ -496,11 +535,11 @@ form span {
 }
 
 /* hmepage card CSS */
-.serviceitem_container {
+/* .serviceitem_container {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
   gap: 1.5rem;
-}
+} */
 .sigaservice_container {
   /* font-style: italic;
   font-size: 0.75rem;
@@ -510,14 +549,14 @@ form span {
 }
 
 @media (min-width: 768px) {
-  .serviceitem_container {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .serviceitem_wrapper {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (min-width: 1024px) {
-  .serviceitem_container {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  .serviceitem_wrapper {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 

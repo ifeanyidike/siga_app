@@ -2,11 +2,20 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Register from '@components/Register'
 import LogIn from '@components/LogIn'
-import data from '@utils/data'
-import ServiceItems from '@components/ServiceItems'
+// import data from '@utils/data'
+import axios from 'axios'
+import Listservices from '@components/servicesfolder/Listservices'
 
+const getServices = async () => {
+  const { data } = await axios.get(
+    `${process.env.SERVICE_DATA_URI}/api/ourservices`
+  )
+  return data
+}
 
-const Homepage = () => {
+const Homepage = async () => {
+  const serviceData = await getServices()
+  console.log(serviceData)
   return (
     <section className='homepage'>
       <div className='image-container'>
@@ -26,10 +35,8 @@ const Homepage = () => {
           Promises, Desired Games and many more...
         </p>
       </div>
-      <div className='serviceitem_container'>
-        {data.services.map((service) => (
-          <ServiceItems key={service.slug} service={service} />
-        ))}
+      <div className='sigaserviceitem_container'>
+        <Listservices key={serviceData._id} data={serviceData} />
       </div>
     </section>
   )

@@ -1,5 +1,5 @@
 const BlogPage = () => {
-  return <div>BlogPage</div>
+  return <div>useGlobalContext</div>
 }
 
 export default BlogPage

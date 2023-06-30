@@ -2,7 +2,7 @@
 import '@styles/globals.css'
 import { Josefin_Sans } from 'next/font/google'
 import Nav from '@components/Nav'
-import { GlobalContextProvider } from './context/store'
+import { GlobalContextProvider } from './GlobalContextProvider'
 
 const josefin_sans = Josefin_Sans({
   weight: ['100', '200', '300', '400', '500', '600', '700'],
@@ -28,11 +28,10 @@ export default function RootLayout({ children }) {
         </div>
 
         <main className='app'>
-          <header>
-            {' '}
+          <GlobalContextProvider>
             <Nav />
-          </header>
-          <GlobalContextProvider>{children}</GlobalContextProvider>
+            {children}
+          </GlobalContextProvider>
         </main>
         <footer className='footer'>
           Copyright &copy; 2023 SIGA. All rights reserved
