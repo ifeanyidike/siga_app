@@ -1,12 +1,12 @@
 import Address from '@models/addressModel'
 import { connectToDB } from '@utils/database'
 
-export const POST = async (req, res) => {
-  await connectToDB()
+export const POST = async (req) => {
+  // await connectToDB()
 
   const { street, city, state, phoneNo, zipCode, country, user } =
     await req.json()
-  
+
   try {
     await connectToDB()
     const newAddressExists = await Address.findOne({ phoneNo })
@@ -17,6 +17,16 @@ export const POST = async (req, res) => {
       })
     }
 
+    // const newAddress = new Address({
+    //   street,
+    //   city,
+    //   state,
+    //   phoneNo,
+    //   zipCode,
+    //   country,
+    //   user: user._id,
+    // })
+
     const newAddress = new Address({
       street,
       city,
@@ -24,26 +34,28 @@ export const POST = async (req, res) => {
       phoneNo,
       zipCode,
       country,
-      user: user._id,
+      user,
     })
 
     await newAddress.save()
     console.log(newAddress)
 
+    // if (newAddress) {
+    //   return new Response(
+    //     JSON.stringify({
+    //       _id: newAddress._id,
+    //       user: newAddress.user,
+    //       street: newAddress.street,
+    //       city: newAddress.city,
+    //       state: newAddress.state,
+    //       phoneNo: newAddress.phoneNo,
+    //       zipCode: newAddress.zipCode,
+    //       country: newAddress.country,
+    //     }),
+    //     { status: 201 }
+    //   )
     if (newAddress) {
-      return new Response(
-        JSON.stringify({
-          _id: newAddress._id,
-          user: newAddress.user,
-          street: newAddress.street,
-          city: newAddress.city,
-          state: newAddress.state,
-          phoneNo: newAddress.phoneNo,
-          zipCode: newAddress.zipCode,
-          country: newAddress.country,
-        }),
-        { status: 201 }
-      )
+      return new Response(JSON.stringify(newAddress), { status: 201 })
     } else {
       return new Response('Invalid newAddress data', { status: 400 })
     }

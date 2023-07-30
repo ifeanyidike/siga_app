@@ -6,15 +6,15 @@ import { SessionProvider } from 'next-auth/react'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-export function GlobalContextProvider({ children }) {
+export function GlobalContextProvider({ children, session }) {
   return (
     <>
       <ToastContainer position='top-right' />
-      <AuthProvider>
-        <CartProvider>
-          <SessionProvider>{children}</SessionProvider>
-        </CartProvider>
-      </AuthProvider>
+      <SessionProvider session={session}>
+        <AuthProvider>
+          <CartProvider>{children}</CartProvider>
+        </AuthProvider>
+      </SessionProvider>
     </>
   )
 }

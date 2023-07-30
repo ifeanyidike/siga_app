@@ -6,24 +6,28 @@ import { countries } from 'countries-list'
 import AuthContext from '@context/AuthContext'
 
 const NewAddress = () => {
-  const { error, addNewAddress, clearError } = useContext(AuthContext)
-  const countriesList = Object.values(countries)
-  const [street, setStreet] = useState('')
-  const [city, setCity] = useState('')
-  const [state, setState] = useState('')
-  const [phoneNo, setPhoneNo] = useState()
-  const [zipCode, setZipCode] = useState()
-  const [country, setCountry] = useState('')
+  const {
+    error,
+    addNewAddress,
+    clearError,
+    address,
+    setAddress,
+    submitting,
+    setSubmitting,
+    countriesList,
+  } = useContext(AuthContext)
+  // const countriesList = Object.values(countries)
+  // const [street, setStreet] = useState('')
+  // const [city, setCity] = useState('')
+  // const [state, setState] = useState('')
+  // const [phoneNo, setPhoneNo] = useState()
+  // const [zipCode, setZipCode] = useState()
+  // const [country, setCountry] = useState('')
 
   const submitHandler = (e) => {
     e.preventDefault()
     const newAddress = {
-      street,
-      city,
-      state,
-      zipCode,
-      phoneNo,
-      country,
+      address,
     }
     addNewAddress(newAddress)
   }
@@ -39,7 +43,7 @@ const NewAddress = () => {
                 style={{ maxWidth: '480px' }}
                 className='mt-1 mb-20 p-4 md:p-7 mx-auto rounded bg-white shadow-lg'
               >
-                <form onSubmit={submitHandler}>
+                <form onSubmit={submitHandler} type='create'>
                   <h2 className='mb-5 text-2xl font-semibold'>
                     Add new Address
                   </h2>
@@ -50,8 +54,10 @@ const NewAddress = () => {
                       className='appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full'
                       type='text'
                       placeholder='Type your address'
-                      value={street}
-                      onChange={(e) => setStreet(e.target.value)}
+                      value={address.street}
+                      onChange={(e) =>
+                        setAddress({ ...address, street: e.target.value })
+                      }
                     />
                   </div>
 
@@ -62,8 +68,11 @@ const NewAddress = () => {
                         className='appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full'
                         type='text'
                         placeholder='Type your city'
-                        value={city}
-                        onChange={(e) => setCity(e.target.value)}
+                        value={address.city}
+                        // onChange={(e) => setCity(e.target.value)}
+                        onChange={(e) =>
+                          setAddress({ ...address, city: e.target.value })
+                        }
                       />
                     </div>
 
@@ -73,8 +82,11 @@ const NewAddress = () => {
                         className='appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full'
                         type='text'
                         placeholder='Type state here'
-                        value={state}
-                        onChange={(e) => setState(e.target.value)}
+                        value={address.state}
+                        // onChange={(e) => setState(e.target.value)}
+                        onChange={(e) =>
+                          setAddress({ ...address, state: e.target.value })
+                        }
                       />
                     </div>
                   </div>
@@ -86,8 +98,11 @@ const NewAddress = () => {
                         className='appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full'
                         type='number'
                         placeholder='Type zip code here'
-                        value={zipCode}
-                        onChange={(e) => setZipCode(e.target.value)}
+                        value={address.zipCode}
+                        // onChange={(e) => setZipCode(e.target.value)}
+                        onChange={(e) =>
+                          setAddress({ ...address, zipCode: e.target.value })
+                        }
                       />
                     </div>
 
@@ -97,8 +112,11 @@ const NewAddress = () => {
                         className='appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full'
                         type='number'
                         placeholder='Type phone no here'
-                        value={phoneNo}
-                        onChange={(e) => setPhoneNo(e.target.value)}
+                        value={address.phoneNo}
+                        // onChange={(e) => setPhoneNo(e.target.value)}
+                        onChange={(e) =>
+                          setAddress({ ...address, phoneNo: e.target.value })
+                        }
                       />
                     </div>
                   </div>
@@ -107,8 +125,11 @@ const NewAddress = () => {
                     <label className='block mb-1'> Country </label>
                     <select
                       className='appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full'
-                      value={country}
-                      onChange={(e) => setCountry(e.target.value)}
+                      value={address.country}
+                      // onChange={(e) => setCountry(e.target.value)}
+                      onChange={(e) =>
+                        setAddress({ ...address, country: e.target.value })
+                      }
                     >
                       {countriesList.map((country) => (
                         <option key={country.name} value={country.name}>

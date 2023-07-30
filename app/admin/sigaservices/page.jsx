@@ -12,7 +12,7 @@ const ServiceListPage = () => {
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
-      redirect('/login?callbackUrl=/servicelist')
+      redirect('/login?callbackUrl=/admin/sigaservices')
     },
   })
 

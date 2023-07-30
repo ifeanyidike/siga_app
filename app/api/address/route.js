@@ -4,7 +4,7 @@ import Address from '@models/addressModel'
 export const GET = async (request) => {
   try {
     await connectToDB()
-    const addresses = await Address.find({})
+    const addresses = await Address.find({}).populate('user')
     console.log(' USER', user)
     return new Response(JSON.stringify(addresses), { status: 200 })
   } catch (error) {
