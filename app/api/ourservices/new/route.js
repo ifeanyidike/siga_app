@@ -1,5 +1,6 @@
 import Service from '@models/serviceModel'
 import { connectToDB } from '@utils/database'
+import { NextResponse } from 'next/server'
 
 export const POST = async (req, res) => {
   await connectToDB()
@@ -7,12 +8,12 @@ export const POST = async (req, res) => {
     name,
     slug,
     description,
-    image,
+    images,
     category,
     availability,
     quantity,
     rating,
-    reviews,
+    numreviews,
   } = await req.json()
 
   try {
@@ -20,20 +21,23 @@ export const POST = async (req, res) => {
 
     const newServiceExists = await Service.findOne({ name })
     if (newServiceExists) {
-      return new Response('You have already added this service', {
-        status: 400,
-      })
+      return NextResponse.json(
+        { message: 'You have already added this service' },
+        {
+          status: 400,
+        }
+      )
     }
     const newService = new Service({
       name,
       slug,
       description,
-      image,
+      images,
       category,
       availability,
       quantity,
       rating,
-      reviews,
+      numreviews,
     })
 
     await newService.save()
@@ -46,17 +50,20 @@ export const POST = async (req, res) => {
           name: newService.name,
           slug: newService.slug,
           description: newService.description,
-          image: newService.image,
+          images: newService.images,
           category: newService.category,
           availability: newService.availability,
           quantity: newService.quantity,
           rating: newService.rating,
-          reviews: newService.reviews,
+          numreviews: newService.numreviews,
         }),
         { status: 201 }
       )
     } else {
-      return new Response('Invalid service data', { status: 400 })
+      return NextResponse.json(
+        { message: 'Invalid service data' },
+        { status: 400 }
+      )
     }
   } catch (error) {
     console.log(error)

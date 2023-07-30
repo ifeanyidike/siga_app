@@ -1,5 +1,6 @@
 import React from 'react'
-import ServiceItems from '@components/ServiceItems'
+import ServiceItems from '@components/servicesfolder/ServiceItems'
+import Nav from '@components/Nav'
 
 const Listservices = ({ data }) => {
   return (
@@ -7,7 +8,10 @@ const Listservices = ({ data }) => {
       <div className='listservice-wrapper'>
         <div className='serviceitem_wrapper'>
           {data?.map((service) => (
-            <ServiceItems key={service._id} service={service} />
+            <>
+              <ServiceItems key={service._id} service={service} />
+             
+            </>
           ))}
         </div>
       </div>

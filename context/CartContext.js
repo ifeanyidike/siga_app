@@ -22,12 +22,21 @@ export const CartProvider = ({ children }) => {
     )
   }
 
-  const addItemToCart = async ({ service, name, image, quantity = 1 }) => {
+  const addItemToCart = async ({
+    service,
+    name,
+    image,
+    availability,
+    category,
+    quantity,
+  }) => {
     const item = {
       service,
       name,
       image,
       quantity,
+      category,
+      availability,
     }
 
     const isItemExist = cart?.cartItems?.find((i) => i.service === item.service)
@@ -39,14 +48,20 @@ export const CartProvider = ({ children }) => {
         i.service === isItemExist.service ? item : i
       )
     } else {
-      newCartItems = [...(cart?.cartItems || [])]
+      newCartItems = [...(cart?.cartItems || []), item]
     }
 
     localStorage.setItem('cart', JSON.stringify({ cartItems: newCartItems }))
+    setCartToState()
   }
 
+  const deleteItemFromCart = (id) => {
+    const newCartItems = cart?.cartItems?.filter((i) => i.service !== id)
+    localStorage.setItem('cart', JSON.stringify({ cartItems: newCartItems }))
+    setCartToState()
+  }
   return (
-    <CartContext.Provider value={{ cart, addItemToCart }}>
+    <CartContext.Provider value={{ cart, addItemToCart, deleteItemFromCart }}>
       {children}
     </CartContext.Provider>
   )

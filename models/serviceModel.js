@@ -14,13 +14,19 @@ const serviceSchema = new Schema(
       type: String,
       required: [true, 'Please enter service name'],
     },
-    image: {
-      type: String,
-      required: true,
-    },
+    images: [
+      {
+        public_id: {
+          type: String,
+        },
+        url: {
+          type: String,
+        },
+      },
+    ],
     category: {
       type: String,
-      required: [true, 'Please enter the category'],
+      required: [true, 'Please indicate the category'],
     },
     availability: {
       type: String,
