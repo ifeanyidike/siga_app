@@ -1,37 +1,16 @@
-'use client'
-
-import { useContext, useState } from 'react'
 import Sidebar from '@components/Sidebar'
-import { countries } from 'countries-list'
-import AuthContext from '@context/AuthContext'
+import Link from 'next/link'
 
-const NewAddress = () => {
-  const {
-    error,
-    addNewAddress,
-    clearError,
-    address,
-    setAddress,
-    submitting,
-    setSubmitting,
-    countriesList,
-  } = useContext(AuthContext)
-  // const countriesList = Object.values(countries)
-  // const [street, setStreet] = useState('')
-  // const [city, setCity] = useState('')
-  // const [state, setState] = useState('')
-  // const [phoneNo, setPhoneNo] = useState()
-  // const [zipCode, setZipCode] = useState()
-  // const [country, setCountry] = useState('')
-
-  const submitHandler = (e) => {
-    e.preventDefault()
-    const newAddress = {
-      address,
-    }
-    addNewAddress(newAddress)
-  }
-
+const EditAddressForm = ({
+  type,
+  address,
+  setAddress,
+  handleSubmit,
+  countriesList,
+  submitting,
+  description,
+  setSubmitting,
+}) => {
   return (
     <>
       <section className='py-10'>
@@ -43,11 +22,15 @@ const NewAddress = () => {
                 style={{ maxWidth: '480px' }}
                 className='mt-1 mb-20 p-4 md:p-7 mx-auto rounded bg-white shadow-lg'
               >
-                <form onSubmit={submitHandler} type='create'>
+                <form onSubmit={handleSubmit}>
                   <h2 className='mb-5 text-2xl font-semibold'>
-                    Add new Address
+                    {type} Address
                   </h2>
-
+                  <p>
+                    {' '}
+                    {type}
+                    {description}
+                  </p>
                   <div className='mb-4 md:col-span-2'>
                     <label className='block mb-1'> Street* </label>
                     <input
@@ -138,13 +121,33 @@ const NewAddress = () => {
                       ))}
                     </select>
                   </div>
-
-                  <button
-                    type='submit'
-                    className='my-2 px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700'
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'flex-end',
+                      marginBottom: '5px',
+                      border: '2px solid red',
+                    }}
                   >
-                    Add
-                  </button>
+                    <Link
+                      href={'/me/userprofilepage'}
+                      style={{
+                        color: 'gray',
+                        fontWeight: 500,
+                        fontSize: 'small',
+                        marginRight: '20px',
+                      }}
+                    >
+                      Cancel
+                    </Link>
+                    <button
+                      type='submit'
+                      className='my-2 px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700'
+                      disabbled={submitting}
+                    >
+                      {submitting ? `${type}...` : type}
+                    </button>
+                  </div>
                 </form>
               </div>
             </main>
@@ -155,4 +158,4 @@ const NewAddress = () => {
   )
 }
 
-export default NewAddress
+export default EditAddressForm

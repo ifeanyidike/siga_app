@@ -1,10 +1,10 @@
-import NewAddress from '@components/user/NewAddress'
+import AddressForm from '@components/user/AddressForm'
 import axios from 'axios'
 
 const NewAddressPage = () => {
   return (
     <div>
-      <NewAddress />
+      <AddressForm type='Create' />
     </div>
   )
 }

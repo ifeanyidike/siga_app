@@ -3,16 +3,18 @@
 import axios from 'axios'
 import Profile from '@components/auth/Profile'
 import Image from 'next/image'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
+import AuthContext from '@context/AuthContext'
 
-const getAddresses = async () => {
-  const { data } = await axios.get(`/api/address`)
-  return data
-}
+// const getAddresses = async () => {
+//   const { data } = await axios.get(`/api/address`)
+//   return data
+// }
 
 const ProfilePage = () => {
+  const [addresses, setAddresses] = useState([])
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
@@ -20,31 +22,20 @@ const ProfilePage = () => {
     },
   })
 
-  const [addresses, setAddresses] = useState([])
-
   useEffect(() => {
     const fetchAddresses = async () => {
-      const addressesData = await getAddresses()
-      setAddresses(addressesData)
+      const response = await fetch(`/api/address`)
+      const addressData = await response.json()
+      setAddresses(addressData)
+      console.log(addressData)
     }
 
-    if (session) {
-      fetchAddresses()
-    }
-  }, [session])
-
-  if (status === 'loading') {
-    return <div>Loading...</div>
-  }
-
-  if (!session || status === 'unauthenticated') {
-    // You can choose to show a message or redirect here, depending on your requirements
-    return <div>Please login to view this page.</div>
-  }
+    fetchAddresses()
+  }, [])
 
   return (
     <section>
-      {session && <Profile addresses={addresses} session={session} />}
+      <Profile addressData={addresses} />
     </section>
   )
 }

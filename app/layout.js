@@ -26,15 +26,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang='en'>
-      <body
-        className={
-          josefin_sans.className ? josefin_sans.className : nunito.className
-        }
-      >
+      <body className={josefin_sans.className}>
         <link rel='icon' href='/favicon.ico' sizes='any' />
-        <div className='main'>
-          <div className='gradient' />
-        </div>
+        <div className='main'>{/* <div className='gradient' /> */}</div>
 
         <main className='app'>
           <GlobalContextProvider>

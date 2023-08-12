@@ -10,12 +10,13 @@ import { useSession, signIn, signOut, getProviders } from 'next-auth/react'
 import AdminDropDown from '@components/AdminDropDown'
 import AdminUser from '@components/AdminUser'
 import UserDropDown from './UserDropDown'
+import UserInfo from './user/UserInfo'
 
 const Nav = () => {
   const [providers, setProviders] = useState(null)
   const { user, setUser } = useContext(AuthContext)
   const { data } = useSession()
-
+  console.log(user)
   useEffect(() => {
     const setUpProviders = async () => {
       const response = await getProviders()
@@ -27,16 +28,16 @@ const Nav = () => {
       setUser(data?.user)
     }
   }, [data])
+
   const { cart } = useContext(CartContext)
   const cartItems = cart?.cartItems
-
+  console.log(user)
   return (
     <nav className='nav-container'>
       <div className='searchbar-container'>{/* <Searchbar /> */}</div>
       <div className='wishlist_link'>
         <Link href='/wishlist'>
           <Image
-            style={{ color: 'green' }}
             src={'/assets/icons/addtofavorite.svg'}
             width={30}
             height={30}
@@ -52,19 +53,19 @@ const Nav = () => {
           <Link className='nav_link' href='/login'>
             <button className='login'>SIGN IN</button>
           </Link>
-        ) : user?.role !== 'admin' ? (
-          <div className='user_maincontainer'>
-            <div className='userandadmin_container'>
-              <UserDropDown user={user} />
-            </div>
-          </div>
-        ) : (
+        ) : user?.role === 'admin' ? (
           <div className='admin_dropdown_div'>
             <div>
               <AdminDropDown />
             </div>
             <div>
               <AdminUser user={user} />
+            </div>
+          </div>
+        ) : (
+          <div className='user_maincontainer'>
+            <div className='userandadmin_container'>
+              <UserDropDown user={user} />
             </div>
           </div>
         )}

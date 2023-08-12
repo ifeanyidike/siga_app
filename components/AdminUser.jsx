@@ -36,7 +36,7 @@ export default function AdminUser({ user }) {
                     src={
                       user.avarta
                         ? user.avarta.url
-                        : '/assets/images/defaultimage.png'
+                        : '/assets/images/defaultavatar.jpg'
                     }
                     height={30}
                     width={30}

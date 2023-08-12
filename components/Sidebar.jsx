@@ -76,7 +76,7 @@ const Sidebar = () => {
             <li>
               {' '}
               <Link
-                href='/me'
+                href='/me/userprofilepage'
                 className='block px-3 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md'
               >
                 Your Profile
@@ -94,7 +94,7 @@ const Sidebar = () => {
             <li>
               {' '}
               <Link
-                href='/me/update'
+                href={user && `/me/update?id=${user.id}`}
                 className='block px-3 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md'
               >
                 Update Profile
@@ -133,7 +133,7 @@ const Sidebar = () => {
             <li>
               {' '}
               <Link
-                href='/me/update'
+                href={`/me/update`}
                 className='block px-3 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md'
               >
                 Update Profile

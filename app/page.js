@@ -4,9 +4,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import Searchbar from '@components/Searchbar'
-import axios from 'axios'
 import Listservices from '@components/servicesfolder/Listservices'
-import Nav from '@components/Nav'
 
 // const getServices = async () => {
 //   const { data } = await axios.get(

@@ -3,13 +3,16 @@
 import { useContext } from 'react'
 import CartContext from '@context/CartContext'
 import { useSession } from 'next-auth/react'
+
 import { redirect } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
+import AuthContext from '@context/AuthContext'
 
-const WishList = () => {
+const WishList = ({ type }) => {
   const { addItemToCart, cart, deleteItemFromCart } = useContext(CartContext)
-
+  const { user, setUser } = useContext(AuthContext)
+  console.log(user)
   const { data: session, status } = useSession()
   console.log(session)
   const increaseQty = (cartItem) => {
@@ -33,10 +36,8 @@ const WishList = () => {
       <section>
         <div>
           <h2 className='title'>
-            {cart?.cartItems?.length || 0} Service(s) in Wishlist
+            {cart?.cartItems?.length || 0} Service(s) in {type}
           </h2>
-          <h3>Wished By:{session?.user?.name}</h3>
-          <h3>Email{session?.user?.email}</h3>
         </div>
       </section>
       {cart?.cartItems?.length > 0 && (
@@ -56,8 +57,13 @@ const WishList = () => {
                                   src={
                                     cartItem.image
                                       ? cartItem.image
-                                      : '/assets/images/joy.png'
+                                      : '/assets/images/song3.jpg'
                                   }
+                                  // src={
+                                  //   service?.images[0]
+                                  //     ? service.images[0].url
+                                  //     : '/assets/images/lovelymusic.jpg'
+                                  // }
                                   alt='Title'
                                   width={60}
                                   height={60}

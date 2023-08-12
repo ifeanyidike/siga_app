@@ -54,7 +54,7 @@ export default function UserDropDown({ user }) {
                 </Link>
               </Menu.Item>
               <Menu.Item>
-                <Link href={'/me'}>
+                <Link href={'/me/userprofilepage'}>
                   <button className='dropdown-element-btn'>Profile</button>
                 </Link>
               </Menu.Item>
