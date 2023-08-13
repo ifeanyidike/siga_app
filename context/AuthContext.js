@@ -1,90 +1,101 @@
-'use client'
+"use client";
 
-import axios, { AxiosError } from 'axios'
-import { useRouter } from 'next/navigation'
-import { createContext, useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
-import { countries } from 'countries-list'
-import Image from 'next/image'
-import { useSearchParams } from 'next/navigation'
+import axios, { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
+import { createContext, useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { countries } from "countries-list";
+import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 
-const AuthContext = createContext()
+const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const searchParams = useSearchParams()
-  const userId = searchParams.get('id')
-  console.log(userId)
+  const searchParams = useSearchParams();
+  const userId = searchParams.get("id");
+  console.log(userId);
 
   // const { data: session } = useSession()
 
-  const router = useRouter()
+  const router = useRouter();
 
-  const [error, setError] = useState(null)
-  const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [success, setSuccess] = useState(null)
-  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState(null);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
   const [address, setAddress] = useState({
-    street: '',
-    city: '',
-    state: '',
-    phoneNo: '',
-    zipCode: '',
-  })
-  const countriesList = Object.values(countries)
+    street: "",
+    city: "",
+    state: "",
+    phoneNo: "",
+    zipCode: "",
+  });
+  const countriesList = Object.values(countries);
 
   const registerUser = async ({ name, email, password, phone }) => {
     try {
-      const { data } = await axios.post('/api/auth/register', {
+      const { data } = await axios.post("/api/auth/register", {
         name,
         email,
         phone,
         password,
-      })
-      console.log(data)
+      });
+      console.log(data);
       if (data) {
-        setSuccess(success?.response?.data.message)
+        setSuccess(success?.response?.data.message);
       }
     } catch (error) {
-      setError('An error occurred during registration.') // Generic error message
-      return false // Return error status
+      setError("An error occurred during registration."); // Generic error message
+      return false; // Return error status
     }
-  }
+  };
 
   const updateUserProfile = async (formData) => {
-    setLoading(true)
-
-    if (!userId) return alert('User ID not Found')
+    setLoading(true);
+    // console.log("userId", userId);
+    // if (!userId) return alert("User ID not Found");
 
     try {
-      const formDataObj = new FormData()
-      formDataObj.append('name', formData.name)
-      formDataObj.append('email', formData.email)
-      formDataObj.append('phone', formData.phone)
-      formDataObj.append('role', formData.role)
+      console.log("formData", formData.avarta);
+      const formDataObj = new FormData();
+      formDataObj.append("name", formData.name);
+      formDataObj.append("email", formData.email);
+      formDataObj.append("phone", formData.phone);
+      formDataObj.append("role", formData.role);
 
-      formDataObj.append('image', formData.image)
+      formDataObj.append("image", formData.avarta);
 
-      const response = await fetch(`/api/users/${userId}`, {
-        method: 'PATCH',
-        body: JSON.stringify(formDataObj),
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      console.log(response)
-      if (response.ok) {
-        setLoading(false)
-        alert('User updated successfully!')
-        router.push('/me/userprofilepage')
+      const response = await axios.patch(
+        `/api/users/64d810048fea39754469b30c`,
+        formDataObj,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      // const response = await fetch(`/api/users/64d810048fea39754469b30c`, {
+      //   method: "PATCH",
+      //   body: JSON.stringify(formDataObj),
+      //   headers: {
+      //     "Content-Type": "multipart/form-data",
+      //   },
+      // });
+
+      if (response.status === 200) {
+        setLoading(false);
+        alert("User updated successfully!");
+        router.push("/me/userprofilepage");
       }
     } catch (error) {
-      setLoading(false)
-      console.log(error)
+      setLoading(false);
+      console.log(error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   // const addNewAddress = async ({
   //   street,
@@ -113,11 +124,11 @@ export const AuthProvider = ({ children }) => {
   //   }
   // }
   const addNewAddress = async (e) => {
-    setSubmitting(true)
+    setSubmitting(true);
 
     try {
-      const response = await fetch('/api/address/new', {
-        method: 'POST',
+      const response = await fetch("/api/address/new", {
+        method: "POST",
         body: JSON.stringify({
           street: address.street,
           city: address.city,
@@ -127,20 +138,20 @@ export const AuthProvider = ({ children }) => {
           country: address.country,
           user: session?.user._id,
         }),
-      })
+      });
       if (response.ok) {
-        router.push('/me')
+        router.push("/me");
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     } finally {
-      setSubmitting(false)
+      setSubmitting(false);
     }
-  }
+  };
 
   const clearError = () => {
-    setError(null)
-  }
+    setError(null);
+  };
   return (
     <AuthContext.Provider
       value={{
@@ -162,6 +173,6 @@ export const AuthProvider = ({ children }) => {
     >
       {children}
     </AuthContext.Provider>
-  )
-}
-export default AuthContext
+  );
+};
+export default AuthContext;
