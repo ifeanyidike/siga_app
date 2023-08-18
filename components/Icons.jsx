@@ -19,9 +19,9 @@ export const TrashIcons = () => {
   )
 }
 
-export const EditIcons = () => {
+export const EditIcons = ({ handleServiceUpdate }) => {
   return (
-    <div style={{ widows: '100%' }}>
+    <div style={{ widows: '100%' }} onClick={handleServiceUpdate}>
       <svg
         xmlns='http://www.w3.org/2000/svg'
         viewBox='0 0 24 24'

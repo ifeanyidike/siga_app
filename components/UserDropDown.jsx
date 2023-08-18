@@ -1,10 +1,13 @@
 import { Menu, Transition } from '@headlessui/react'
 import Link from 'next/link'
 import { signOut } from 'next-auth/react'
-import { Fragment, useEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState, useContext } from 'react'
 import Image from 'next/image'
+import AuthContext from '@context/AuthContext'
 
-export default function UserDropDown({ user }) {
+export default function UserDropDown() {
+  const { user } = useContext(AuthContext)
+  console.log(user)
   const logoutHandler = () => {
     signOut()
   }
@@ -16,8 +19,8 @@ export default function UserDropDown({ user }) {
             <Image
               style={{ borderRadius: '50%' }}
               src={
-                user.avarta
-                  ? user.avarta.url
+                user.avatar
+                  ? user.avatar.url
                   : '/assets/images/defaultimage.png'
               }
               height={30}
@@ -43,8 +46,8 @@ export default function UserDropDown({ user }) {
                   <Image
                     style={{ borderRadius: '50%' }}
                     src={
-                      user.avarta
-                        ? user.avarta.url
+                      user.avatar
+                        ? user.avatar.url
                         : '/assets/images/defaultimage.png'
                     }
                     height={30}

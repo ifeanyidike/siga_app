@@ -12,6 +12,7 @@ const UserInfo = ({
   handleUserUpdate,
   handleUserDelete,
 }) => {
+  console.log(singleUserInfo)
   // const { user } = useContext(AuthContext)
   const { updateUser } = useContext(AuthContext)
   const pathName = usePathname()
@@ -29,8 +30,8 @@ const UserInfo = ({
             style={{ borderRadius: '50%' }}
             className='w-16 h-16 rounded-full mr-4'
             src={
-              singleUserInfo?.avarta
-                ? singleUserInfo.avarta.url
+              singleUserInfo?.avatar
+                ? singleUserInfo.avatar.url
                 : '/assets/images/defaultimage.png'
             }
             alt={singleUserInfo?.name}

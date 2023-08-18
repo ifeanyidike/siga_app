@@ -4,11 +4,11 @@ import axios from 'axios'
 import { useState, useEffect } from 'react'
 import ServiceList from '@components/servicesfolder/ServiceList'
 import { useSession } from 'next-auth/react'
-import { redirect } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 
 const ServiceListPage = () => {
   const [allSigaServices, setAllSigaServices] = useState([])
-
+  const router = useRouter()
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
@@ -28,6 +28,13 @@ const ServiceListPage = () => {
     fetchServiceLists()
   }, [])
 
+  const handleServiceUpdate = (slug) => {
+    console.log('Service ID:', slug)
+    router.push(`/sigaservice/update?slug=${slug}`)
+
+    console.log('clicked')
+  }
+
   // const deleteData = await deleteService()
   console.log(allSigaServices)
 
@@ -37,6 +44,7 @@ const ServiceListPage = () => {
         <ServiceList
           key={allSigaServices._id}
           allSigaServices={allSigaServices}
+          handleServiceUpdate={handleServiceUpdate}
         />
       )}
     </section>

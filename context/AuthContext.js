@@ -13,7 +13,8 @@ const AuthContext = createContext()
 export const AuthProvider = ({ children }) => {
   const searchParams = useSearchParams()
   const userId = searchParams.get('id')
-  console.log(userId)
+  console.log('USER ID', userId)
+  const serviceSlug = searchParams.get('slug')
 
   // const { data: session } = useSession()
 
@@ -21,6 +22,7 @@ export const AuthProvider = ({ children }) => {
 
   const [error, setError] = useState(null)
   const [user, setUser] = useState(null)
+  const [service, setService] = useState(null)
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(null)
   const [submitting, setSubmitting] = useState(false)
@@ -57,23 +59,22 @@ export const AuthProvider = ({ children }) => {
     if (!userId) return alert('User ID not Found')
 
     try {
+      console.log('formData', formData.avatar)
       const formDataObj = new FormData()
       formDataObj.append('name', formData.name)
       formDataObj.append('email', formData.email)
       formDataObj.append('phone', formData.phone)
-      formDataObj.append('role', formData.role)
+      // formDataObj.append('role', formData.role)
 
-      formDataObj.append('image', formData.image)
+      formDataObj.append('image', formData.avatar)
 
-      const response = await fetch(`/api/users/${userId}`, {
-        method: 'PATCH',
-        body: JSON.stringify(formDataObj),
+      const response = await axios.patch(`/api/users/${userId}`, formDataObj, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       })
       console.log(response)
-      if (response.ok) {
+      if (response.status === 200) {
         setLoading(false)
         alert('User updated successfully!')
         router.push('/me/userprofilepage')
@@ -81,6 +82,78 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       setLoading(false)
       console.log(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const editService = async () => {
+    if (!serviceSlug) {
+      alert('Service Id not available')
+      return
+    }
+
+    setLoading(true)
+
+    try {
+      const formData = new FormData()
+      formData.append('name', formData.name)
+      formData.append('slug', formData.slug)
+      formData.append('description', formData.description)
+      formData.append('category', formData.category)
+      formData.append('availability', formData.availability)
+      formData.append('quantity', formData.quantity)
+      formData.append('rating', formData.rating)
+      formData.append('numReviews', formData.numReviews)
+
+      const response = await axios.patch(
+        `/api/ourservices/${serviceSlug}`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      )
+
+      if (response.status === 200) {
+        alert('Service updated Successfully!')
+        router.push('/admin/sigaservices')
+      } else {
+        alert('Failed to update service')
+      }
+    } catch (error) {
+      console.error('Error updating service:', error.message)
+      alert('An error occurred while updating the service')
+      console.log(error.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const postService = async (formData) => {
+    setLoading(true)
+
+    try {
+      const formDataObj = new FormData()
+      formDataObj.append('name', formData.name)
+      formDataObj.append('slug', formData.slug)
+      formDataObj.append('description', formData.description)
+      formDataObj.append('category', formData.category)
+      formDataObj.append('availability', formData.availability)
+      formDataObj.append('quantity', formData.quantity)
+      formDataObj.append('rating', formData.rating)
+      formDataObj.append('numReviews', formData.numReviews)
+      formDataObj.append('images', formData.images)
+
+      console.log(formDataObj)
+      const response = await axios.post('/api/ourservices/new', formDataObj)
+      if (response.status === 200) {
+        router.push('/')
+      }
+      console.log(response)
+    } catch (error) {
+      alert(error.message)
     } finally {
       setLoading(false)
     }
@@ -146,12 +219,16 @@ export const AuthProvider = ({ children }) => {
       value={{
         user,
         error,
+        service,
+        setService,
         address,
+        editService,
         updateUserProfile,
         loading,
         setAddress,
         submitting,
         setSubmitting,
+        postService,
         setUser,
         registerUser,
         clearError,

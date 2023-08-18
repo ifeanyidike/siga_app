@@ -23,6 +23,8 @@ const ServiceDetailPage = ({ params }) => {
     fetchServiceDetails()
   }, [id])
 
+  
+
   if (loading) {
     return (
       <div>

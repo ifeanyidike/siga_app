@@ -14,7 +14,7 @@ const UserProfile = ({
   singleUserAddress,
   handleEdit,
   handleDelete,
-singleUserInfo,
+  singleUserInfo,
   description,
   handleUserUpdate,
   handleUserDelete,

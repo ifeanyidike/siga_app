@@ -34,9 +34,9 @@ export default function AdminUser({ user }) {
                   <Image
                     style={{ borderRadius: '50%' }}
                     src={
-                      user.avarta
-                        ? user.avarta.url
-                        : '/assets/images/defaultavatar.jpg'
+                      user.avatar
+                        ? user.avatar.url
+                        : '/assets/images/defaultimage.png'
                     }
                     height={30}
                     width={30}

@@ -15,6 +15,7 @@ import UserInfo from './user/UserInfo'
 const Nav = () => {
   const [providers, setProviders] = useState(null)
   const { user, setUser } = useContext(AuthContext)
+  console.log(user)
   const { data } = useSession()
   console.log(user)
   useEffect(() => {
