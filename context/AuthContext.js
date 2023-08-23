@@ -13,14 +13,16 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const searchParams = useSearchParams();
   const userId = searchParams.get("id");
-  console.log(userId);
+  const serviceSlug = searchParams.get("slug");
 
   // const { data: session } = useSession()
 
   const router = useRouter();
+  const { data: session, update } = useSession();
 
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
+  const [service, setService] = useState(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -57,34 +59,32 @@ export const AuthProvider = ({ children }) => {
     // if (!userId) return alert("User ID not Found");
 
     try {
-      console.log("formData", formData.avarta);
       const formDataObj = new FormData();
       formDataObj.append("name", formData.name);
       formDataObj.append("email", formData.email);
       formDataObj.append("phone", formData.phone);
-      formDataObj.append("role", formData.role);
+      // formDataObj.append('role', formData.role)
 
-      formDataObj.append("image", formData.avarta);
+      formDataObj.append("image", formData.avatar);
 
-      const response = await axios.patch(
-        `/api/users/64d810048fea39754469b30c`,
-        formDataObj,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      // const response = await fetch(`/api/users/64d810048fea39754469b30c`, {
-      //   method: "PATCH",
-      //   body: JSON.stringify(formDataObj),
-      //   headers: {
-      //     "Content-Type": "multipart/form-data",
-      //   },
-      // });
+      const response = await axios.patch(`/api/users/${userId}`, formDataObj, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (response.status === 200) {
+        const { name, email, phone, avatar } = response.data;
+        await update({
+          ...session,
+          user: {
+            ...session?.user,
+            name,
+            email,
+            phone,
+            avatar,
+          },
+        });
         setLoading(false);
         alert("User updated successfully!");
         router.push("/me/userprofilepage");
@@ -92,6 +92,84 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       setLoading(false);
       console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const editService = async (props) => {
+    if (!serviceSlug) {
+      alert("Service Id not available");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("name", props.name);
+      formData.append("slug", props.slug);
+      formData.append("description", props.description);
+      formData.append("category", props.category);
+      formData.append("availability", props.availability);
+      formData.append("quantity", props.quantity);
+      formData.append("rating", props.rating);
+      formData.append("numReviews", props.numReviews);
+
+      Array.from(props.images).forEach((file, i) => {
+        formData.append(`images-${i}`, file);
+      });
+
+      const response = await axios.patch(
+        `/api/ourservices/${serviceSlug}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        alert("Service updated Successfully!");
+        router.push("/admin/sigaservices");
+      } else {
+        alert("Failed to update service");
+      }
+    } catch (error) {
+      console.error("Error updating service:", error.message);
+      alert("An error occurred while updating the service");
+      console.log(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const postService = async (formData) => {
+    setLoading(true);
+
+    try {
+      const formDataObj = new FormData();
+      formDataObj.append("name", formData.name);
+      formDataObj.append("slug", formData.slug);
+      formDataObj.append("description", formData.description);
+      formDataObj.append("category", formData.category);
+      formDataObj.append("availability", formData.availability);
+      formDataObj.append("quantity", formData.quantity);
+      formDataObj.append("rating", formData.rating);
+      formDataObj.append("numReviews", formData.numReviews);
+      Array.from(formData.images).forEach((file, i) => {
+        formDataObj.append(`images-${i}`, file, file.name);
+      });
+
+      console.log(formDataObj);
+      const response = await axios.post("/api/ourservices/new", formDataObj);
+      if (response.status === 200) {
+        router.push("/");
+      }
+      console.log(response);
+    } catch (error) {
+      alert(error.message);
     } finally {
       setLoading(false);
     }
@@ -157,12 +235,16 @@ export const AuthProvider = ({ children }) => {
       value={{
         user,
         error,
+        service,
+        setService,
         address,
+        editService,
         updateUserProfile,
         loading,
         setAddress,
         submitting,
         setSubmitting,
+        postService,
         setUser,
         registerUser,
         clearError,

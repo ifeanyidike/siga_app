@@ -6,7 +6,7 @@ import { useContext } from 'react'
 import AuthContext from '@context/AuthContext'
 import UserAddresses from '@components/user/UserAddresses'
 import { useSession } from 'next-auth/react'
-import { redirect } from 'next/navigation'
+import { redirect, usePathname, useRouter } from 'next/navigation'
 
 const Profile = ({ addressData }) => {
   const { data: session, status } = useSession({
@@ -16,17 +16,20 @@ const Profile = ({ addressData }) => {
     },
   })
 
-  const { user, updateUser, setUser, submitting, setSubmitting } =
-    useContext(AuthContext)
+  const { user, setUser, submitting, setSubmitting } = useContext(AuthContext)
 
-  console.log(user)
   console.log(user)
   if (status === 'loading') {
     return <div>Loading...</div>
   }
-
+  const pathName = usePathname()
+  const router = useRouter()
   if (!session || status === 'unauthenticated') {
     redirect('/login')
+  }
+
+  const handleUserUpdate = () => {
+    router.push(`/me/update?id=${user._id}`)
   }
 
   return (
@@ -37,8 +40,8 @@ const Profile = ({ addressData }) => {
             style={{ borderRadius: '50%' }}
             className='w-16 h-16 rounded-full mr-4'
             src={
-              user?.avarta
-                ? user.avarta.url
+              user?.avatar
+                ? user.avatar.url
                 : '/assets/images/defaultavatar.jpg'
             }
             alt={user?.name}
@@ -52,6 +55,29 @@ const Profile = ({ addressData }) => {
             <b>Email:</b> {user?.email} | <b>Joined On: </b>
             {user?.createdAt}
           </p>
+          {session?.user.id ||
+            (pathName === '/me' && (
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <p
+                  style={{
+                    fontFamily: 'inter',
+                    padding: '20px 30px',
+                    fontSize: 'small',
+                    cursor: 'pointer',
+                    color: 'green',
+                  }}
+                  onClick={handleUserUpdate}
+                >
+                  Edit
+                </p>
+              </div>
+            ))}
         </figcaption>
       </figure>
       <hr className='my-4' />

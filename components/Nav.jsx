@@ -16,12 +16,10 @@ const Nav = () => {
   const [providers, setProviders] = useState(null);
   const { user, setUser } = useContext(AuthContext);
   const { data } = useSession();
-
   useEffect(() => {
     const setUpProviders = async () => {
       const response = await getProviders();
       setProviders(response);
-      console.log(response);
     };
     setUpProviders();
     if (data) {
@@ -70,10 +68,10 @@ const Nav = () => {
           </div>
         )}
 
-        <div class="hamburger-menu-container">
-          <div class="hamburger-menu"></div>
-          <div class="hamburger-menu"></div>
-          <div class="hamburger-menu"></div>
+        <div className="hamburger-menu-container">
+          <div className="hamburger-menu"></div>
+          <div className="hamburger-menu"></div>
+          <div className="hamburger-menu"></div>
         </div>
       </div>
     </nav>

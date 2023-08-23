@@ -1,18 +1,18 @@
-import { Schema, model, models } from 'mongoose'
+import { Schema, model, models } from "mongoose";
 
 const serviceSchema = new Schema(
   {
     name: {
       type: String,
-      required: [true, 'Please enter service name'],
+      required: [true, "Please enter service name"],
     },
     slug: {
       type: String,
-      required: [true, 'Please enter slug keyword'],
+      required: [true, "Please enter slug keyword"],
     },
     description: {
       type: String,
-      required: [true, 'Please enter service name'],
+      required: [true, "Please enter service name"],
     },
     images: [
       {
@@ -26,11 +26,11 @@ const serviceSchema = new Schema(
     ],
     category: {
       type: String,
-      required: [true, 'Please indicate the category'],
+      required: [true, "Please indicate the category"],
     },
     availability: {
       type: String,
-      required: [true, 'Please indicate availability'],
+      required: [true, "Please indicate availability"],
     },
     quantity: {
       type: Number,
@@ -44,11 +44,10 @@ const serviceSchema = new Schema(
       {
         rating: {
           type: Number,
-          required: true,
         },
         comment: {
           type: String,
-          required: true,
+          default: "",
         },
         createdAt: {
           type: Date,
@@ -60,7 +59,7 @@ const serviceSchema = new Schema(
   {
     timestamps: true,
   }
-)
+);
 
-const Service = models.Service || model('Service', serviceSchema)
-export default Service
+const Service = models.Service || model("Service", serviceSchema);
+export default Service;

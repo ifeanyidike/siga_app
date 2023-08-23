@@ -6,19 +6,7 @@ import AuthContext from "@context/AuthContext";
 import { useSearchParams, useRouter, redirect } from "next/navigation";
 import { toast } from "react-toastify";
 
-const UpdateProfile = ({
-  type,
-  // onImageChange,
-  // user,
-  // setUser,
-  // updateUser,
-  // handleSubmit,
-  // submitting,
-  // setSubmitting,
-  // avartaPreview,
-  // avarta,
-  // handleImageSubmit,
-}) => {
+const UpdateProfile = ({ type }) => {
   const searchParams = useSearchParams();
   const userId = searchParams.get("id");
   const formRef = useRef();
@@ -27,8 +15,8 @@ const UpdateProfile = ({
   const [phone, setPhone] = useState("");
   const [role, setRole] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [avarta, setAvarta] = useState("");
-  const [avartaPreview, setAvartaPreview] = useState(
+  const [avatar, setAvatar] = useState("");
+  const [avatarPreview, setAvatarPreview] = useState(
     "/assets/images/defaultimage.png"
   );
   const { user, updateUserProfile, loading, error, clearError } =
@@ -37,19 +25,12 @@ const UpdateProfile = ({
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    // const formData = new FormData();
-    // formData.set("name", name);
-    // formData.set("email", email);
-    // formData.set("phone", phone);
-    // formData.set("role", role);
-    // formData.set("image", avarta);
-
     updateUserProfile({
       name,
       email,
       phone,
       role,
-      avarta,
+      avatar,
     });
   };
 
@@ -58,10 +39,10 @@ const UpdateProfile = ({
 
     reader.onload = () => {
       if (reader.readyState === 2) {
-        setAvartaPreview(reader.result);
+        setAvatarPreview(reader.result);
       }
     };
-    setAvarta(e.target.files[0]);
+    setAvatar(e.target.files[0]);
     reader.readAsDataURL(e.target.files[0]);
   };
 
@@ -139,7 +120,7 @@ const UpdateProfile = ({
           </div>
           <div className="profile_image">
             <Image
-              src={avartaPreview}
+              src={avatarPreview}
               alt="image"
               width={100}
               height={100}

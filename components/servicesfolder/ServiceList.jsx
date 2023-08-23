@@ -2,11 +2,14 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+
 import { TrashIcons, EditIcons } from '@components/Icons'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-const ServiceList = ({ allSigaServices, deleteData }) => {
+const ServiceList = ({ allSigaServices, deleteData, handleServiceUpdate }) => {
+  const router = useRouter()
+
   return (
     <section className='servicelist_container'>
       <div className='servicelist_heading'>
@@ -32,23 +35,34 @@ const ServiceList = ({ allSigaServices, deleteData }) => {
           </thead>
 
           <tbody>
-            {allSigaServices.map((allSigaservice) => (
-              <tr key={allSigaservice._id}>
-                <td>{allSigaservice._id}</td>
-                <td>{allSigaservice.name}</td>
-                <td>{allSigaservice.slug}</td>
-                <td>{allSigaservice.category}</td>
-                <td>{allSigaservice.availability}</td>
-                <td className='edit-icon-container'>
-                  <Link href={`/admin/services/edit`}>
-                    <EditIcons className='editicons' />
-                  </Link>
-                </td>
-                <td className='delete-icon-container'>
-                  <TrashIcons className='trashicon' />
-                </td>
+            {allSigaServices.length > 0 ? (
+              allSigaServices.map((allSigaservice) => (
+                <tr key={allSigaservice._id}>
+                  <td>{allSigaservice._id}</td>
+                  <td>{allSigaservice.name}</td>
+                  <td>{allSigaservice.slug}</td>
+                  <td>{allSigaservice.category}</td>
+                  <td>{allSigaservice.availability}</td>
+                  <td className='edit-icon-container'>
+                    {console.log(allSigaservice)}
+                    <EditIcons
+                      className='editicons'
+                      handleServiceUpdate={() =>
+                        handleServiceUpdate &&
+                        handleServiceUpdate(allSigaservice.slug)
+                      }
+                    />
+                  </td>
+                  <td className='delete-icon-container'>
+                    <TrashIcons className='trashicon' />
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan='6'>No services available.</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
